@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """Convert VOTable to FITS"""
+from dask import delayed, compute
+from dask.delayed import Delayed
 from pathlib import Path
 from typing import List
 
@@ -12,6 +14,7 @@ VOT_EXTENSIONS = (
     ".votable",
 )
 
+@delayed
 def convert_table(
         file_path: Path,
         overwrite: bool = False,
@@ -38,9 +41,13 @@ def main(
     file_names: List[str],
     overwrite: bool = False,
 ):
+    tasks: List[Delayed] = []
     for file_name in file_names:
             file_path = Path(file_name)
-            convert_table(file_path, overwrite=overwrite)
+            task = convert_table(file_path, overwrite=overwrite)
+            tasks.append(task)
+    
+    compute(*tasks)
     print("Done!")
 
 
