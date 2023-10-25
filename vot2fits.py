@@ -31,8 +31,12 @@ def main(
             print(f"Skipping {file_name} as it is not a VOTable")
             continue
         table = Table.read(file_name)
+        print(f"Read {file_path}")
         fits_name = file_path.with_suffix(".fits")
+        print(f"Writing {fits_name}")
         table.write(fits_name, overwrite=overwrite)
+        print(f"Wrote {fits_name}")
+    print("Done!")
 
 
 if __name__ == "__main__":
