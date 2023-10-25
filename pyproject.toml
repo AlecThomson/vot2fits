@@ -7,9 +7,9 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.8"
 astropy = "^5"
-click = "^8.1.7"
+click = "^8"
 
 
 [build-system]
