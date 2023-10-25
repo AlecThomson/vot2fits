@@ -12,6 +12,19 @@ VOT_EXTENSIONS = (
     ".votable",
 )
 
+def convert_table(
+        file_path: Path,
+        overwrite: bool = False,
+) -> None:
+    if file_path.suffix not in VOT_EXTENSIONS:
+        print(f"Skipping {file_path} as it is not a VOTable")
+        return
+    print(f"Reading {file_path}")
+    table = Table.read(file_path)
+    fits_name = file_path.with_suffix(".fits")
+    print(f"Writing {fits_name}")
+    table.write(fits_name, overwrite=overwrite)
+    print(f"Wrote {fits_name}")
 
 @click.command()
 @click.argument("file_names", nargs=-1)
@@ -26,16 +39,8 @@ def main(
     overwrite: bool = False,
 ):
     for file_name in file_names:
-        file_path = Path(file_name)
-        if file_path.suffix not in VOT_EXTENSIONS:
-            print(f"Skipping {file_name} as it is not a VOTable")
-            continue
-        table = Table.read(file_name)
-        print(f"Read {file_path}")
-        fits_name = file_path.with_suffix(".fits")
-        print(f"Writing {fits_name}")
-        table.write(fits_name, overwrite=overwrite)
-        print(f"Wrote {fits_name}")
+            file_path = Path(file_name)
+            convert_table(file_path, overwrite=overwrite)
     print("Done!")
 
 
