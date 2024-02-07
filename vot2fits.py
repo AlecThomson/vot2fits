@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Convert VOTable to FITS"""
-from dask import delayed, compute
-from dask.delayed import Delayed
 from pathlib import Path
 from typing import List
 
 import click
 from astropy.table import Table
+from dask import compute, delayed
+from dask.delayed import Delayed
 
 VOT_EXTENSIONS = (
     ".vot",
@@ -14,10 +14,11 @@ VOT_EXTENSIONS = (
     ".votable",
 )
 
+
 @delayed
 def convert_table(
-        file_path: Path,
-        overwrite: bool = False,
+    file_path: Path,
+    overwrite: bool = False,
 ) -> None:
     if file_path.suffix not in VOT_EXTENSIONS:
         print(f"Skipping {file_path} as it is not a VOTable")
@@ -28,6 +29,7 @@ def convert_table(
     print(f"Writing {fits_name}")
     table.write(fits_name, overwrite=overwrite)
     print(f"Wrote {fits_name}")
+
 
 @click.command()
 @click.argument("file_names", nargs=-1)
@@ -43,10 +45,10 @@ def main(
 ):
     tasks: List[Delayed] = []
     for file_name in file_names:
-            file_path = Path(file_name)
-            task = convert_table(file_path, overwrite=overwrite)
-            tasks.append(task)
-    
+        file_path = Path(file_name)
+        task = convert_table(file_path, overwrite=overwrite)
+        tasks.append(task)
+
     compute(*tasks)
     print("Done!")
 
