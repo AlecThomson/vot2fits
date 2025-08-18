@@ -1,15 +1,15 @@
 [tool.poetry]
 name = "vot2fits"
-version = "0.1.0"
+version = "0.1.1"
 description = "Convert VOTable to  FITS"
 authors = ["Alec Thomson (S&A, Kensington WA) <alec.thomson@csiro.au>"]
 license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8"
-astropy = "^5"
-click = "^8"
+python = ">=3.8"
+astropy = ">=5"
+click = ">=8"
 
 
 [build-system]
