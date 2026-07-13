@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Convert VOTable to FITS"""
+
 from pathlib import Path
 from typing import List
 
